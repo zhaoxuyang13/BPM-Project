@@ -6,6 +6,7 @@ import VueRouter from 'vue-router'
 
 import ParkingManagement from './components/parkingManagement/ParkingManagement.vue'
 import HelloWorld from './components/HelloWorld.vue'
+import ParkCar from "./components/parkCar/ParkCar.vue";
 
 Vue.config.productionTip = false
 
@@ -14,6 +15,7 @@ Vue.use(VueRouter)
 
 const routes = [
   { path: '/parkingManagement', component: ParkingManagement },
+  { path: '/parkCar', component: ParkCar},
   { path: '/helloWorld', component: HelloWorld}
 ]
 
