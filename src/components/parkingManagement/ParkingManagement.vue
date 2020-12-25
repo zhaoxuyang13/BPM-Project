@@ -4,7 +4,7 @@
     <a-row>
       <a-col :span="6"></a-col>
       <a-col :span="12">
-        <a-table :columns="columns" :data-source="data" :rowKey="data => data.id" :pagination="false"></a-table>
+        <a-table :columns="columns" :data-source="data" :rowKey="data => data.id" :pagination="false" bordered></a-table>
       </a-col>
       <a-col :span="6"></a-col>
     </a-row>
