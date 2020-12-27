@@ -19,19 +19,35 @@
 <!--      <a-col :xs="4" :sm="4" :md="4" :lg="3" :xl="2" >-->
 <!--      </a-col>-->
     </a-row>
-    <a-col :xs="20" :sm="16" :md="12" :lg="8" :xl="6" >
-      <div >
-        <a-textarea  style="margin-bottom: 10px">
-          <a-icon slot="prefix" type="user" />
-          车主：{{this.userName}} ，车牌:{{this.carPai}}<br>
-          分配车位: {{this.parkinglotid}}
-        </a-textarea>
-        <a-button type="primary" @click="request_for_entering"  > 进场 </a-button>
+    <a-row type="flex" justify="center" v-if="pendingRequestEnd">
+      <a-col :xs="20" :sm="16" :md="12" :lg="8" :xl="6" >
+        <div >
+          <template  style="margin-bottom: 10px">
+            <a-icon slot="prefix" type="user" />
+            车主：{{this.userName}} ，车牌:{{this.carPai}}<br>
+            分配车位: {{this.parkinglotid}} <br>
+          </template>
 
-      </div>
-    </a-col>
-    <a-row type="flex" justify="center" v-if="!pendingRequestEnd">
+          <template  style="margin-bottom: 10px" v-if="entered">
+            进场时间: {{this.enterTime}}
+          </template>
+          <a-button type="primary" @click="request_for_entering" v-if="!entered" > 进场 </a-button>
+          <a-button type="primary" @click="exit_parking" v-if="entered & !exited"> 离场 </a-button>
 
+          <a-modal v-model="exited" title="支付" on-ok="handleOk">
+            <template slot="footer">
+              <a-button type="primary" @click="fakepay" :loading="paying"> 支付 </a-button>
+            </template>
+            <div v-if="exited" >
+              车牌:{{this.carPai}}<br>
+              进场时间: {{this.enterTime}}
+              离场时间: {{this.outTime}} <br>
+              车费共计： {{this.fee}} 元
+            </div>
+          </a-modal>
+
+        </div>
+      </a-col>
     </a-row>
   </div>
 </template>
@@ -94,6 +110,30 @@ let sendEnteringRequests = (that) => {
   })
 }
 
+let sendExitParkingRequest = (that) =>{
+  that.$axios.put("/Parkingrequest/" + that.reqId,
+      {
+        "status": "PAID",
+        "parkinglotid": that.parkinglotid,
+        "carid": that.carPai,
+        "entertime": that.enterTime,
+        "leavetime" : that.outTime,
+        "fee" : that.fee,
+      }
+  ).then(resp => {
+    console.log(resp)
+    that.refreshStates()
+  })
+}
+let calcFee = (begin, end) => {
+  let interv = (end - begin)/1000
+  let min = Math.floor(interv / 60) % 60
+  let hour = Math.floor(interv / 3600)
+  let sec5 = Math.floor((interv % 60) / 5)
+  let sec = interv % 5
+  let fee = hour * 1 + min * 100 + sec * 2.5 + sec5 * 11
+  return fee
+}
 export default {
   name: 'ParkCar',
   data() {
@@ -106,9 +146,30 @@ export default {
       parkinglotid:null,
       entered:false,
       enterTime: null,
+      exited : false,
+      outTime: null,
+      fee: 0,
+      feePaid: false,
+      paying: false,
     };
   },
   methods: {
+    refreshStates(){
+      this.userName= ''
+      this.carPai=''
+      this.reqId = null
+      this.reqId= null
+      this.pendingRequestSend= false
+      this.pendingRequestEnd=false
+      this.parkinglotid=null
+      this.entered=false
+      this.enterTime= null
+      this.exited =false
+      this.outTime= null
+      this.fee= 0
+      this.feePaid= false
+      this.paying= false
+    },
     emitEmpty() {
       this.$refs.userNameInput.focus();
       this.userName = '';
@@ -124,7 +185,21 @@ export default {
       this.entered = true
       this.enterTime = new Date().toString();
       sendEnteringRequests(this)
-
+    },
+    exit_parking(){
+      this.outTime = new Date().toString()
+      this.fee = calcFee(new Date(this.enterTime),new Date(this.outTime))
+      console.log(this.outTime,this.fee)
+      this.exited= true
+    },
+    fakepay(){
+      this.paying = true
+      setTimeout(()=>{
+        this.feePaid = true
+        this.paying = false
+        this.$message.info("车费支付成功，正在离场...")
+        sendExitParkingRequest(this)
+      },3000)
     }
   },
 }
