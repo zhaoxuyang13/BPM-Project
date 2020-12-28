@@ -1,7 +1,5 @@
 <template>
-  <div class="hello">
-    <h1>Hello Vue.js! This is intended to be the CarPark page.</h1>
-    <h2>这是车主停车页面</h2>
+  <div>
     <a-row type="flex" justify="center" v-if="!pendingRequestEnd">
       <a-col :xs="20" :sm="16" :md="12" :lg="8" :xl="6" >
         <div >
@@ -138,6 +136,7 @@ export default {
   name: 'ParkCar',
   data() {
     return {
+      collapsed: false,
       userName: '',
       carPai:'',
       reqId: null,
@@ -155,8 +154,6 @@ export default {
   },
   methods: {
     refreshStates(){
-      this.userName= ''
-      this.carPai=''
       this.reqId = null
       this.reqId= null
       this.pendingRequestSend= false
@@ -207,6 +204,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+
 h3 {
   margin: 40px 0 0;
 }
