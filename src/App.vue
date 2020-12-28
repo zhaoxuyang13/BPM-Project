@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <a-layout id="components-layout-demo-side" style="min-height: 100vh">
-      <a-layout-sider v-model="collapsed" collapsible>
+      <a-layout-sider v-model="collapsed" collapsible >
         <div class="logo" />
         <a-menu theme="dark" :default-selected-keys="['1']" mode="inline">
           <a-menu-item @click="navigateToHome" key="2">
@@ -15,17 +15,21 @@
               <span >停车</span>
             </a-menu-item>
             <a-menu-item @click="navigateToBuyParkingLot"  key="3">
-              <a-icon type="desktop" />
+              <a-icon type="money-collect" />
               <span>买车位</span>
             </a-menu-item>
           </a-sub-menu>
           <a-sub-menu key="sub2">
-            <span slot="title"><a-icon type="user" /><span>车库端</span></span>
+            <span slot="title"><a-icon type="desktop" /><span>车库端</span></span>
             <a-menu-item @click="navigateToParkingManagement" key="4">
-              <a-icon type="pie-chart" />
+              <a-icon type="profile" />
               <span >停车位管理</span>
             </a-menu-item>
           </a-sub-menu>
+          <a-menu-item @click="navigateToStatistic" key="5">
+            <a-icon type="bar-chart" />
+            <span >统计</span>
+          </a-menu-item>
         </a-menu>
       </a-layout-sider>
       <a-layout>
@@ -40,8 +44,10 @@
         </a-layout-footer>
       </a-layout>
     </a-layout>
+
   </div>
 </template>
+
 
 <script>
 
@@ -65,6 +71,9 @@ export default {
     },
     navigateToParkingManagement(){
       this.$router.push("ParkingManagement")
+    },
+    navigateToStatistic(){
+      this.$router.push("statistic")
     }
 
   }
@@ -84,8 +93,9 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  /*text-align: center;*/
   color: #2c3e50;
   margin-top: 0px;
 }
+
 </style>

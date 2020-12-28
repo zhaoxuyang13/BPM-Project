@@ -11,7 +11,7 @@
           </a-input>
           <a-input ref="carPaiInput" v-model="carPai" placeholder="车牌号" style="margin-bottom: 10px"/>
           <a-button type="primary" @click="request_for_parking" :loading="pendingRequestSend" > 我要停车 </a-button>
-          <a-button type="primary" @click="fakeSuccess" > 假装成功 </a-button>
+<!--          <a-button type="primary" @click="fakeSuccess" > 假装成功 </a-button>-->
         </div>
       </a-col>
 <!--      <a-col :xs="4" :sm="4" :md="4" :lg="3" :xl="2" >-->
@@ -47,9 +47,13 @@
         </div>
       </a-col>
     </a-row>
+    <div id="single-keyboard-box">
+      <single-keyboard :args="{presetNumber: '', keyboardType:0, }" :callbacks="callbacks"/>
+    </div>
   </div>
 </template>
 
+<script src="SingleKeyboard.js"></script>
 <script>
 
 
@@ -150,6 +154,9 @@ export default {
       fee: 0,
       feePaid: false,
       paying: false,
+      callbacks:[
+
+      ],
     };
   },
   methods: {
