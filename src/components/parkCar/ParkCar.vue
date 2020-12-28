@@ -47,15 +47,11 @@
         </div>
       </a-col>
     </a-row>
-    <div id="single-keyboard-box">
-      <single-keyboard :args="{presetNumber: '', keyboardType:0, }" :callbacks="callbacks"/>
-    </div>
   </div>
 </template>
 
-<script src="SingleKeyboard.js"></script>
-<script>
 
+<script>
 
 const SHORT_INTERVAL = 5000
 // const LONG_INTERVAL = 10000
@@ -136,6 +132,15 @@ let calcFee = (begin, end) => {
   let fee = hour * 1 + min * 100 + sec * 2.5 + sec5 * 11
   return fee
 }
+// 输入完成时此函数会被调用
+let  native_callback_completed = (number, isAutoCompleted) => {
+  alert("车牌号码已输入完成: " + number + "，自动完成吗？" + isAutoCompleted);
+}
+
+// 输入过程中，车牌号码增量变化时，此函数会被调用
+let  native_callback_changed = (number, isCompleted) => {
+  alert("输入中的车牌：" + number + "，是否完成：" + isCompleted);
+}
 export default {
   name: 'ParkCar',
   data() {
@@ -154,9 +159,8 @@ export default {
       fee: 0,
       feePaid: false,
       paying: false,
-      callbacks:[
-
-      ],
+      oncompleted: native_callback_completed,
+      onkeypressed: native_callback_changed,
     };
   },
   methods: {
@@ -208,7 +212,6 @@ export default {
   },
 }
 </script>
-
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
