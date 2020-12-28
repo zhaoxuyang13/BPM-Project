@@ -7,7 +7,8 @@ import axios from 'axios'
 
 import ParkingManagement from './components/parkingManagement/ParkingManagement.vue'
 import HelloWorld from './components/HelloWorld.vue'
-import ParkCar from "./components/parkCar/ParkCar.vue";
+import ParkCar from "./components/parkCar/ParkCar.vue"
+import Statistic from "./components/Statistic/Statistic.vue"
 
 Vue.config.productionTip = false
 
@@ -21,7 +22,8 @@ axios.defaults.baseURL = 'http://202.120.40.8:30611/Entity/U994562eaecc68/parkin
 const routes = [
   { path: '/parkingManagement', component: ParkingManagement },
   { path: '/parkCar', component: ParkCar},
-  { path: '/helloWorld', component: HelloWorld}
+  { path: '/helloWorld', component: HelloWorld},
+  { path: '/statistic', component: Statistic},
 ]
 
 const router = new VueRouter({
