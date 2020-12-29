@@ -73,11 +73,12 @@ let data = [
         }*/
 ]
 
+let active = false
+
 const SHORT_INTERVAL = 5000
 const LONG_INTERVAL = 10000
 
 function getParkingLotData(that) {
-  console.log(that.$axios.get('/Parkinglot'))
   that.$axios
     .get('/Parkinglot')
     .then((response) => {
@@ -87,7 +88,8 @@ function getParkingLotData(that) {
       } else {
         that.data = []
       }
-      setTimeout(getParkingLotData, SHORT_INTERVAL, that)
+      if (that.active) 
+        setTimeout(getParkingLotData, SHORT_INTERVAL, that)
     }).catch((error) => {
       console.error(error)
     })
@@ -156,7 +158,7 @@ async function handlePaid(that, parkingRequest) {
   
 }
 
-function checkParkingRequest(that, parkingRequestID) {
+function checkParkingRequest(that, parkingRequestID, previousStatus) {
   that.$axios
     .get('/Parkingrequest/' + parkingRequestID)
     .then(async (response) => {
@@ -164,31 +166,33 @@ function checkParkingRequest(that, parkingRequestID) {
       let err
       let paidResult
       console.assert(!(parkingRequest.status === undefined), 'parkingRequest status undefined')
-      switch (parkingRequest.status) {
-        case 'PENDING':
-          console.assert(false, 'should not be PENDING here')
-          break
-        case 'ACCEPTED':
-          break // ACCEPTPED不要处理
-        case 'ENTERED':
-          handleEntered(that, parkingRequest)
-          break
-        case 'LEAVING':
-          handleLeaving(that, parkingRequest)
-          break
-        case 'PAID':
-          paidResult = await handlePaid(that, parkingRequest)
-          console.assert(paidResult, 'handlePaid returns false')
-          break
-        default:
-          err = 'unknown parking request status: ' + parkingRequest.status
-          console.assert(false, err)
-          throw new Error(err)
+      if (!(parkingRequest.status === previousStatus)) {
+        switch (parkingRequest.status) {
+          case 'PENDING':
+            console.assert(false, 'should not be PENDING here')
+            break
+          case 'ACCEPTED':
+            break // ACCEPTPED不要处理
+          case 'ENTERED':
+            handleEntered(that, parkingRequest)
+            break
+          case 'LEAVING':
+            handleLeaving(that, parkingRequest)
+            break
+          case 'PAID':
+            paidResult = await handlePaid(that, parkingRequest)
+            console.assert(paidResult, 'handlePaid returns false')
+            break
+          default:
+            err = 'unknown parking request status: ' + parkingRequest.status
+            console.assert(false, err)
+            throw new Error(err)
+        }
       }
       if (parkingRequest.status === 'PAID') {
         return
       } else {
-        setTimeout(checkParkingRequest, SHORT_INTERVAL, that, parkingRequestID)
+        setTimeout(checkParkingRequest, SHORT_INTERVAL, that, parkingRequestID, parkingRequest.status)
       }
     }).catch((error) => {
       console.error(error)
@@ -218,10 +222,11 @@ async function searchPendingParkingRequests(that) {
           pendingRequest.parkinglotid = parkinglotid
           await modifyParkingRequest(that, pendingRequest)
           that.$message.info('为' + pendingRequest.carid + '分配了' + parkinglotid + '号车位')
-          checkParkingRequest(that, pendingRequest.id) // 开启loop，扫描这个parking request
+          checkParkingRequest(that, pendingRequest.id, pendingRequest.status) // 开启loop，扫描这个parking request
         }
       }
-      setTimeout(searchPendingParkingRequests, LONG_INTERVAL, that)
+      if (that.active)
+        setTimeout(searchPendingParkingRequests, LONG_INTERVAL, that)
     }).catch((error) => {
       console.error(error)
     })
@@ -232,12 +237,17 @@ export default {
   data () {
     return {
       data,
-      columns
+      columns,
+      active
     }
   },
   mounted: function () {
+    this.active = true
     getParkingLotData(this)
     searchPendingParkingRequests(this)
+  },
+  beforeDestroy: function () {
+    this.active = false
   }
 }
 </script>

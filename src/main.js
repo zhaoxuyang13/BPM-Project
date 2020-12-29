@@ -7,8 +7,9 @@ import axios from 'axios'
 
 import ParkingManagement from './components/parkingManagement/ParkingManagement.vue'
 import HelloWorld from './components/HelloWorld.vue'
-import ParkCar from "./components/parkCar/ParkCar.vue"
-import Statistic from "./components/Statistic/Statistic.vue"
+import ParkCar from './components/parkCar/ParkCar.vue'
+import Statistic from './components/Statistic/Statistic.vue'
+import BuyParkingLot from './components/buyParkingLot/BuyParkingLot.vue'
 
 Vue.config.productionTip = false
 
@@ -24,6 +25,7 @@ const routes = [
   { path: '/parkCar', component: ParkCar},
   { path: '/helloWorld', component: HelloWorld},
   { path: '/statistic', component: Statistic},
+  { path: '/buyParkingLot', component: BuyParkingLot}
 ]
 
 const router = new VueRouter({
