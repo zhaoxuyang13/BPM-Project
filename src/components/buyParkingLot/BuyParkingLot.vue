@@ -6,7 +6,16 @@
         <a-col :span="12">
           <a-row>
             <a-col :span="18">
-              <a-input ref="carPaiInput" v-model="carPai" placeholder="车牌号" style="margin-bottom: 2%"></a-input>
+<!--              <a-input ref="carPaiInput" v-model="carPai" placeholder="车牌号" style="margin-bottom: 2%"></a-input>-->
+              <CarPlateKeyboard
+                  car-number="车牌"
+                  active-color="#ff0000"
+                  ok-btn-text="关闭"
+                  v-on:tap-key="tapedKey"
+                  v-on:tap-box="tapedBox"
+                  v-on:tap-del="tapedDel"
+                  v-on:tap-ok="tapedOk"
+              ></CarPlateKeyboard>
             </a-col>
             <a-col :span="6">
               <a-button type="primary" @click="getFullData()"> 输入车牌号 </a-button>
@@ -24,6 +33,10 @@
 </template>
 
 <script>
+
+import CarPlateKeyboard from '../parkCar/carPlatePanel.vue'
+
+
 let columns = [
   {
     title: '车位编号',
@@ -47,6 +60,9 @@ let carPai = ''
 let showTable = false
 export default {
   name: 'BuyParkingLot',
+  components:{
+    CarPlateKeyboard
+  },
   data () {
     return {
       data,
@@ -56,6 +72,20 @@ export default {
     }
   },
   methods: {
+    tapedKey (data) {
+      console.log(data);
+    },
+    tapedBox (data) {
+      console.log(data)
+    },
+    tapedDel (data) {
+      console.log(data);
+    },
+    tapedOk (data) {
+      console.log(data);
+      this.carPai = data.value
+      console.log(this.carPai)
+    },
     async buyParkingLot(parkingLot) {
       if (this.carPai === '') {
         this.$message.error('车牌号没填')

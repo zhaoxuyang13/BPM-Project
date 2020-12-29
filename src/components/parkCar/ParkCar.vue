@@ -130,7 +130,19 @@ let sendEnteringRequests = (that) => {
         console.log(resp)
   })
 }
-
+let sendLeavingRequests = (that) => {
+  that.$axios.put("/Parkingrequest/" + that.reqId,
+      {
+        "status": "LEAVING",
+        "parkinglotid": that.parkinglotid,
+        "carid": that.carPai,
+        "entertime": that.enterTime,
+        "leavetime" : that.outTime,
+        "fee" : that.fee,
+      }).then(resp=>{
+    console.log(resp)
+  })
+}
 let sendExitParkingRequest = (that) =>{
   that.$axios.put("/Parkingrequest/" + that.reqId,
       {
@@ -238,8 +250,11 @@ export default {
       this.outTime = new Date().toString()
       this.fee = calcFee(new Date(this.enterTime),new Date(this.outTime))
       console.log(this.outTime,this.fee)
+      sendLeavingRequests(this)
       this.exited= true
     },
+
+
     fakepay(){
       this.paying = true
       setTimeout(()=>{
