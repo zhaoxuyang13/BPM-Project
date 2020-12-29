@@ -3,8 +3,8 @@
   <div>
     <h1 style="height: 50px; font-weight:700; font-size:50px;"> <img src="../../assets/parkCar.png" style="height: 100%" alt="park"> 停车 </h1>
 
-    <a-row type="flex" justify="center" v-if="!pendingRequestEnd">
 
+    <a-row type="flex" justify="center" v-if="!pendingRequestEnd">
       <a-col :xs="20" :sm="16" :md="12" :lg="8" :xl="6" >
         <div >
           <a-input ref="userNameInput" v-model="userName" placeholder="用户名" style="margin-bottom: 10px;" size="large">
@@ -13,7 +13,16 @@
               <a-icon type="info-circle" style="color: rgba(0,0,0,.45)" />
             </a-tooltip>
           </a-input>
-          <a-input ref="carPaiInput" v-model="carPai" placeholder="车牌号" style="margin-bottom: 10px" size="large"></a-input>
+          <CarPlateKeyboard
+              car-number="车牌"
+              active-color="#ff0000"
+              ok-btn-text="关闭"
+              v-on:tap-key="tapedKey"
+              v-on:tap-box="tapedBox"
+              v-on:tap-del="tapedDel"
+              v-on:tap-ok="tapedOk"
+          ></CarPlateKeyboard>
+<!--          <a-input ref="carPaiInput" v-model="carPai" placeholder="车牌号" style="margin-bottom: 10px" size="large"></a-input>-->
           <a-button type="primary" @click="request_for_parking" :loading="pendingRequestSend" > 我要停车 </a-button>
 <!--          <a-button type="primary" @click="fakeSuccess" > 假装成功 </a-button>-->
         </div>
@@ -27,15 +36,15 @@
         <a-card title="分配车位信息" style="width: 100%">
           <div >
             <template  style="margin-bottom: 10px; ">
-              <div style="font-size: large; text-align: left; margin-left: 20%">
+              <div style="font-size: large; text-align: left; margin-left: 0%">
                 <a-icon slot="prefix" type="user" /> 车主: {{this.userName}}<br>
                 <a-icon type="car" /> 车牌: {{this.carPai}}<br>
                 <a-icon type="appstore" /> 分配车位: {{this.parkinglotid}} <br>
               </div>
             </template>
             <template  style="margin-bottom: 10px;"  v-if="entered">
-              <div style="font-size: large">
-                进场时间: {{this.enterTime}}
+              <div style="font-size: large; text-align: left; margin-left: 0%">
+                <a-icon type="clock-circle" /> 进场时间: {{dateFormat(this.enterTime)}}
               </div>
             </template><br>
             <a-button type="primary" @click="request_for_entering" v-if="!entered" > 点击进场 </a-button>
@@ -46,10 +55,10 @@
                 <a-button type="primary" @click="fakepay" :loading="paying"> 支付 </a-button>
               </template>
               <div v-if="exited" >
-                车牌:{{this.carPai}}<br>
-                进场时间: {{this.enterTime}}
-                离场时间: {{this.outTime}} <br>
-                车费共计： {{this.fee}} 元
+                <a-icon type="car" /> 车牌:{{this.carPai}}<br>
+                <a-icon type="clock-circle" /> 进场时间: {{dateFormat(this.enterTime)}} <br>
+                <a-icon type="clock-circle" /> 离场时间: {{dateFormat(this.outTime)}} <br>
+                <a-icon type="pay-circle" /> 车费共计： {{this.fee}} 元
               </div>
             </a-modal>
           </div>
@@ -61,6 +70,12 @@
 
 <script>
 
+
+import CarPlateKeyboard from './carPlatePanel.vue'
+
+
+
+// import KeyBoard from "./KeyBoard.vue";
 const SHORT_INTERVAL = 5000
 // const LONG_INTERVAL = 10000
 
@@ -151,6 +166,9 @@ let calcFee = (begin, end) => {
 // }
 export default {
   name: 'ParkCar',
+  components:{
+    CarPlateKeyboard
+  },
   data() {
     return {
       collapsed: false,
@@ -172,6 +190,20 @@ export default {
     };
   },
   methods: {
+    tapedKey (data) {
+      console.log(data);
+    },
+    tapedBox (data) {
+      console.log(data)
+    },
+    tapedDel (data) {
+      console.log(data);
+    },
+    tapedOk (data) {
+      console.log(data);
+      this.carPai = data.value
+      console.log(this.carPai)
+    },
     refreshStates(){
       this.reqId = null
       this.reqId= null
@@ -216,6 +248,28 @@ export default {
         this.$message.info("车费支付成功，正在离场...")
         sendExitParkingRequest(this)
       },3000)
+    },
+    dateFormat(datestr) {
+      let fmt = "YYYY-mm-dd HH:MM"
+      let date = new Date(datestr)
+      let ret
+      const opt = {
+        "Y+": date.getFullYear().toString(),        // 年
+        "m+": (date.getMonth() + 1).toString(),     // 月
+        "d+": date.getDate().toString(),            // 日
+        "H+": date.getHours().toString(),           // 时
+        "M+": date.getMinutes().toString(),         // 分
+        "S+": date.getSeconds().toString()          // 秒
+        // 有其他格式化字符需求可以继续添加，必须转化成字符串
+      }
+      for (let k in opt) {
+        ret = new RegExp("(" + k + ")").exec(fmt);
+        if (ret) {
+          fmt = fmt.replace(ret[1], (ret[1].length == 1) ? (opt[k]) : (opt[k].padStart(ret[1].length, "0")))
+        }
+      }
+      console.log(fmt)
+      return fmt;
     }
   },
 }
@@ -237,5 +291,9 @@ li {
 }
 a {
   color: #42b983;
+}
+.page{
+   /*background-color: antiquewhite;*/
+   padding:20px;
 }
 </style>

@@ -27,20 +27,20 @@
       <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
       <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
     </ul>
-      <CarPlateKeyboard 
-      car-number=""
-      active-color="#ff0000"
-      ok-btn-text="关闭"
-      v-on:tap-key="tapedKey"
-      v-on:tap-box="tapedBox"
-      v-on:tap-del="tapedDel"
-      v-on:tap-ok="tapedOk"
-   ></CarPlateKeyboard>
+<!--      <CarPlateKeyboard -->
+<!--      car-number=""-->
+<!--      active-color="#ff0000"-->
+<!--      ok-btn-text="关闭"-->
+<!--      v-on:tap-key="tapedKey"-->
+<!--      v-on:tap-box="tapedBox"-->
+<!--      v-on:tap-del="tapedDel"-->
+<!--      v-on:tap-ok="tapedOk"-->
+<!--   ></CarPlateKeyboard>-->
   </div>
 </template>
 
 <script>
-import CarPlateKeyboard from './carPlatePanel.vue'
+// import CarPlateKeyboard from './parkCar/carPlatePanel.vue'
 export default {
   name: 'HelloWorld',
   props: {
@@ -58,10 +58,10 @@ export default {
         },
         tapedOk (data) {
             console.log(data);
-        } 
+        }
   },
   components: {
-    CarPlateKeyboard
+    // CarPlateKeyboard
   }
 }
 </script>
