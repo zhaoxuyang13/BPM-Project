@@ -1,6 +1,8 @@
 <template>
   <div>
+    <h1 style="font-weight:700; font-size:50px;"> 停车页面 </h1>
     <a-row type="flex" justify="center" v-if="!pendingRequestEnd">
+
       <a-col :xs="20" :sm="16" :md="12" :lg="8" :xl="6" >
         <div >
           <a-input ref="userNameInput" v-model="userName" placeholder="用户名" style="margin-bottom: 10px;" size="large">
@@ -18,33 +20,38 @@
 <!--      </a-col>-->
     </a-row>
     <a-row type="flex" justify="center" v-if="pendingRequestEnd">
+
       <a-col :xs="20" :sm="16" :md="12" :lg="8" :xl="6" >
-        <div >
-          <template  style="margin-bottom: 10px">
-            <a-icon slot="prefix" type="user" />
-            车主：{{this.userName}} ，车牌:{{this.carPai}}<br>
-            分配车位: {{this.parkinglotid}} <br>
-          </template>
-
-          <template  style="margin-bottom: 10px" v-if="entered">
-            进场时间: {{this.enterTime}}
-          </template>
-          <a-button type="primary" @click="request_for_entering" v-if="!entered" > 进场 </a-button>
-          <a-button type="primary" @click="exit_parking" v-if="entered & !exited"> 离场 </a-button>
-
-          <a-modal v-model="exited" title="支付" on-ok="handleOk">
-            <template slot="footer">
-              <a-button type="primary" @click="fakepay" :loading="paying"> 支付 </a-button>
+        <a-card title="分配车位信息" style="width: 100%">
+          <div >
+            <template  style="margin-bottom: 10px; ">
+              <div style="font-size: large; text-align: left; margin-left: 30%">
+                <a-icon slot="prefix" type="user" /> 车主: {{this.userName}}<br>
+                <a-icon type="car" /> 车牌: {{this.carPai}}<br>
+                <a-icon type="appstore" /> 分配车位: {{this.parkinglotid}} <br>
+              </div>
             </template>
-            <div v-if="exited" >
-              车牌:{{this.carPai}}<br>
-              进场时间: {{this.enterTime}}
-              离场时间: {{this.outTime}} <br>
-              车费共计： {{this.fee}} 元
-            </div>
-          </a-modal>
+            <template  style="margin-bottom: 10px;"  v-if="entered">
+              <div style="font-size: large">
+                进场时间: {{this.enterTime}}
+              </div>
+            </template><br>
+            <a-button type="primary" @click="request_for_entering" v-if="!entered" > 进场 </a-button>
+            <a-button type="primary" @click="exit_parking" v-if="entered & !exited"> 离场 </a-button>
 
-        </div>
+            <a-modal v-model="exited" title="支付" on-ok="handleOk">
+              <template slot="footer">
+                <a-button type="primary" @click="fakepay" :loading="paying"> 支付 </a-button>
+              </template>
+              <div v-if="exited" >
+                车牌:{{this.carPai}}<br>
+                进场时间: {{this.enterTime}}
+                离场时间: {{this.outTime}} <br>
+                车费共计： {{this.fee}} 元
+              </div>
+            </a-modal>
+          </div>
+        </a-card>
       </a-col>
     </a-row>
   </div>
