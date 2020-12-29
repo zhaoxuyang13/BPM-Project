@@ -1,6 +1,11 @@
 <template>
   <div class="hello">
-    <h1>这是车库端管理页面</h1>
+    <a-row >
+        <a-col :span="2"></a-col>
+        <a-col :span="20" align=center>        
+            <h1 style="font-weight:700; font-size:50px;">车位管理页面</h1>
+        </a-col>
+    </a-row>    
     <a-row>
       <a-col :span="6"></a-col>
       <a-col :span="12">

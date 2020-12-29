@@ -1,11 +1,18 @@
 <template>
   <div>
-      <h1>我要购买车位</h1>
-      <a-row>
+    <a-row >
+        <a-col :span="2"></a-col>
+        <a-col :span="20" align=center>        
+            <h1 style="font-weight:700; font-size:50px;">车位购买</h1>
+        </a-col>
+    </a-row>       
+    <a-row>
         <a-col :span="6"></a-col>
         <a-col :span="12">
           <a-row>
-            <a-col :span="18">
+            <a-col :span="3">
+            </a-col>
+            <a-col :span="12" align=right>
 <!--              <a-input ref="carPaiInput" v-model="carPai" placeholder="车牌号" style="margin-bottom: 2%"></a-input>-->
               <CarPlateKeyboard
                   car-number="车牌"
@@ -16,9 +23,13 @@
                   v-on:tap-del="tapedDel"
                   v-on:tap-ok="tapedOk"
               ></CarPlateKeyboard>
+
             </a-col>
-            <a-col :span="6">
-              <a-button type="primary" @click="getFullData()"> 输入车牌号 </a-button>
+            <a-col :span="1">
+            </a-col>
+
+            <a-col :span="6" align=left>
+              <a-button type="primary" @click="getFullData()" size="large"> 输入车牌号 </a-button>
             </a-col>
           </a-row>
           <a-table v-if="showTable" :columns="columns" :data-source="data" :rowKey="data => data.id" :pagination="false" bordered>
