@@ -7,12 +7,10 @@
         </a-col>
     </a-row>       
     <a-row>
-        <a-col :span="6"></a-col>
-        <a-col :span="12">
+        <a-col :span="3"></a-col>
+        <a-col :span="18">
           <a-row>
-            <a-col :span="3">
-            </a-col>
-            <a-col :span="12" align=right>
+            <a-col :span="24" align=right>
 <!--              <a-input ref="carPaiInput" v-model="carPai" placeholder="车牌号" style="margin-bottom: 2%"></a-input>-->
               <CarPlateKeyboard
                   car-number="车牌"
@@ -25,10 +23,11 @@
               ></CarPlateKeyboard>
 
             </a-col>
-            <a-col :span="1">
-            </a-col>
-
-            <a-col :span="6" align=left>
+            
+          </a-row>
+          <br/>
+          <a-row>
+            <a-col :span="24" >
               <a-button type="primary" @click="getFullData()" size="large"> 输入车牌号 </a-button>
             </a-col>
           </a-row>
