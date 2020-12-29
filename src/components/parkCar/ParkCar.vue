@@ -3,13 +3,13 @@
     <a-row type="flex" justify="center" v-if="!pendingRequestEnd">
       <a-col :xs="20" :sm="16" :md="12" :lg="8" :xl="6" >
         <div >
-          <a-input ref="userNameInput" v-model="userName" placeholder="用户名" style="margin-bottom: 10px">
+          <a-input ref="userNameInput" v-model="userName" placeholder="用户名" style="margin-bottom: 10px;" size="large">
             <a-icon slot="prefix" type="user" />
             <a-tooltip slot="suffix" title="输入用户名为演示用，在实现登陆之后，这个输入框应该变成静态文本框">
               <a-icon type="info-circle" style="color: rgba(0,0,0,.45)" />
             </a-tooltip>
           </a-input>
-          <a-input ref="carPaiInput" v-model="carPai" placeholder="车牌号" style="margin-bottom: 10px"/>
+          <a-input ref="carPaiInput" v-model="carPai" placeholder="车牌号" style="margin-bottom: 10px" size="large"></a-input>
           <a-button type="primary" @click="request_for_parking" :loading="pendingRequestSend" > 我要停车 </a-button>
 <!--          <a-button type="primary" @click="fakeSuccess" > 假装成功 </a-button>-->
         </div>

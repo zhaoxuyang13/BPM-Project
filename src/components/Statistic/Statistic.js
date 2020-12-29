@@ -5,17 +5,17 @@ let columns = [
         key:"id",
     },
     {
-        title:"Enter Time",
+        title:"进场时间",
         dataIndex:"entertime",
         key: "entertime",
     },
     {
-        title:"Leave Time",
+        title:"出场时间",
         dataIndex:"leavetime",
         key:"leavetime",
     },
     {
-        title:"Fee",
+        title:"费用",
         dataIndex:"fee",
         key:"fee",
     }
@@ -57,9 +57,10 @@ export default{
         Flush(){
             this.$axios.get('/Parkingrequest?Parkingrequest.status=PAID').then(response =>{
                 this.parkingRequests = response.data.Parkingrequest
-                for(let i = 0; i < this.parkingRequests.length; i++)
+                for(let i = 0; i < this.parkingRequests.length; i++){
                     this.parkingRequests[i].key = i
-    
+                }                
+                this.$message.info('刷新成功');
                 console.log(this.parkingRequests)
             })
         }

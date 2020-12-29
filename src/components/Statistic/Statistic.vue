@@ -1,17 +1,21 @@
 <template>
 <div>
     <a-row >
-        <h1>这是停车情况统计页面</h1>
+        <a-col :span="2"></a-col>
+        <a-col :span="20" align=left>        
+            <h1 style="font-weight:700; font-size:50px;">停车情况统计页面</h1>
+        </a-col>
     </a-row>
-    <br/><br/>
+    <br/>
     <a-row>
         <a-col :span="2"></a-col>
-        <a-col :span="2" align=left>
-            <a-button type="primary" @click="ShowTable">显示所有请求</a-button>
-        </a-col>
-        <a-col :span="1" align=left style="margin-left:-30px">
+        <a-col :span="1" align=left>
             <a-button icon="reload" @click="Flush"></a-button>
         </a-col>
+        <a-col :span="3" align=left>
+            <a-button type="primary" @click="ShowTable">显示所有请求</a-button>
+        </a-col>
+        
         <a-col :span="2"></a-col>
     </a-row>
     <br/>
@@ -49,10 +53,10 @@
             </a-row>
             <a-row>
                 <a-col :span="2"></a-col>
-                <a-col :span="2" align=left style="font-size:20px; margin-top:9px;">
+                <a-col :span="3" align=left style="font-size:20px; margin-top:9px;">
                     {{totalTime}}
                 </a-col>
-                <a-col :span="20" align=left style="font-size:25px;font-weight:700;margin-top:5px;">
+                <a-col :span="18" align=left style="font-size:25px;font-weight:700;margin-top:5px;">
                     {{totalTimeUnit}}
                 </a-col>
             </a-row>
@@ -76,10 +80,10 @@
             </a-row>
             <a-row>
                 <a-col :span="2"></a-col>
-                <a-col :span="2" align=left style="font-size:20px; margin-top:9px;">
+                <a-col :span="3" align=left style="font-size:20px; margin-top:9px;">
                     {{totalFee}}
                 </a-col>
-                <a-col :span="20" align=left style="font-size:30px;font-weight:700;">
+                <a-col :span="18" align=left style="font-size:30px;font-weight:700;">
                     ￥
                 </a-col>
             </a-row>
@@ -92,10 +96,10 @@
             </a-row>
             <a-row>
                 <a-col :span="2"></a-col>
-                <a-col :span="2" align=left style="font-size:20px; margin-top:9px;">
+                <a-col :span="3" align=left style="font-size:20px; margin-top:9px;">
                     {{averageFee}}
                 </a-col>
-                <a-col :span="20" align=left style="font-size:30px;font-weight:700;">
+                <a-col :span="18" align=left style="font-size:30px;font-weight:700;">
                     ￥
                 </a-col>
             </a-row>
