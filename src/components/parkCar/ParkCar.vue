@@ -150,10 +150,10 @@ let calcFee = (begin, end) => {
   let interv = (end - begin)/1000
   let min = Math.floor(interv / 60) % 60
   let hour = Math.floor(interv / 3600)
-  let sec5 = Math.floor((interv % 60) / 5)
-  let sec = interv % 5
-  let fee = hour * 1 + min * 100 + sec * 2.5 + sec5 * 11
-  return fee
+  if(min <= 15 && hour == 0)
+    return 10
+  return hour * 15 + Math.ceil(min/30)*10
+
 }
 // // 输入完成时此函数会被调用
 // let  native_callback_completed = (number, isAutoCompleted) => {
