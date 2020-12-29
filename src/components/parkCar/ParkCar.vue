@@ -1,6 +1,8 @@
+
 <template>
   <div>
-    <h1 style="font-weight:700; font-size:50px;"> 停车页面 </h1>
+    <h1 style="height: 50px; font-weight:700; font-size:50px;"> <img src="../../assets/parkCar.png" style="height: 100%" alt="park"> 停车 </h1>
+
     <a-row type="flex" justify="center" v-if="!pendingRequestEnd">
 
       <a-col :xs="20" :sm="16" :md="12" :lg="8" :xl="6" >
@@ -25,7 +27,7 @@
         <a-card title="分配车位信息" style="width: 100%">
           <div >
             <template  style="margin-bottom: 10px; ">
-              <div style="font-size: large; text-align: left; margin-left: 30%">
+              <div style="font-size: large; text-align: left; margin-left: 20%">
                 <a-icon slot="prefix" type="user" /> 车主: {{this.userName}}<br>
                 <a-icon type="car" /> 车牌: {{this.carPai}}<br>
                 <a-icon type="appstore" /> 分配车位: {{this.parkinglotid}} <br>
@@ -36,8 +38,8 @@
                 进场时间: {{this.enterTime}}
               </div>
             </template><br>
-            <a-button type="primary" @click="request_for_entering" v-if="!entered" > 进场 </a-button>
-            <a-button type="primary" @click="exit_parking" v-if="entered & !exited"> 离场 </a-button>
+            <a-button type="primary" @click="request_for_entering" v-if="!entered" > 点击进场 </a-button>
+            <a-button type="primary" @click="exit_parking" v-if="entered & !exited"> 点击离场 </a-button>
 
             <a-modal v-model="exited" title="支付" on-ok="handleOk">
               <template slot="footer">
@@ -56,7 +58,6 @@
     </a-row>
   </div>
 </template>
-
 
 <script>
 
@@ -139,15 +140,15 @@ let calcFee = (begin, end) => {
   let fee = hour * 1 + min * 100 + sec * 2.5 + sec5 * 11
   return fee
 }
-// 输入完成时此函数会被调用
-let  native_callback_completed = (number, isAutoCompleted) => {
-  alert("车牌号码已输入完成: " + number + "，自动完成吗？" + isAutoCompleted);
-}
-
-// 输入过程中，车牌号码增量变化时，此函数会被调用
-let  native_callback_changed = (number, isCompleted) => {
-  alert("输入中的车牌：" + number + "，是否完成：" + isCompleted);
-}
+// // 输入完成时此函数会被调用
+// let  native_callback_completed = (number, isAutoCompleted) => {
+//   alert("车牌号码已输入完成: " + number + "，自动完成吗？" + isAutoCompleted);
+// }
+//
+// // 输入过程中，车牌号码增量变化时，此函数会被调用
+// let  native_callback_changed = (number, isCompleted) => {
+//   alert("输入中的车牌：" + number + "，是否完成：" + isCompleted);
+// }
 export default {
   name: 'ParkCar',
   data() {
@@ -166,8 +167,8 @@ export default {
       fee: 0,
       feePaid: false,
       paying: false,
-      oncompleted: native_callback_completed,
-      onkeypressed: native_callback_changed,
+      // oncompleted: native_callback_completed,
+      // onkeypressed: native_callback_changed,
     };
   },
   methods: {
