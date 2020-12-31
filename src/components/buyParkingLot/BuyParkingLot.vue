@@ -31,6 +31,7 @@
               <a-button type="primary" @click="getFullData()" size="large"> 输入车牌号 </a-button>
             </a-col>
           </a-row>
+          <br/><br/>
           <a-table v-if="showTable" :columns="columns" :data-source="data" :rowKey="data => data.id" :pagination="false" bordered>
             <span slot="action" slot-scope="text, record">
               <a-button type="primary" @click="buyParkingLot(record)" :disabled="!buyable(record)"> 购买 </a-button>

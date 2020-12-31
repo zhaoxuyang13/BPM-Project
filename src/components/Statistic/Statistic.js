@@ -63,7 +63,6 @@ export default{
                 this.$message.info('刷新成功');
                 console.log(this.parkingRequests)
             })
-        }
     },
     computed:{
         totalFee(){
@@ -85,20 +84,31 @@ export default{
         requestNum(){
             return this.parkingRequests.length
         },
-        totalTime(){
-            var totalParkTime = 0
-            for(var i = 0; i < this.parkingRequests.length; i++){
-                var entertimeDate = new Date(this.parkingRequests[i].entertime.substring(0,24))
-                var leavetimeDate = new Date(this.parkingRequests[i].leavetime.substring(0,24))
-                totalParkTime += Date.parse(leavetimeDate) - Date.parse(entertimeDate)
-            }
-            totalParkTime /= 1000
-            totalParkTime /= 60
-            if (totalParkTime > 100){
-                this.totalTimeUnit = "小时"
-                totalParkTime /= 60
-            }
-            totalParkTime = totalParkTime.toFixed(2)
+        async totalTime(){
+            
+            //Serverless logic
+            var openwhisk = require('openwhisk')
+            var ow = openwhisk({
+                ignore_certs:true
+            })
+            result = await ow.actions.invoke({actionName: "GetTotalTime", result: true, blocking: true, params: {"requests": this.parkingRequests}})
+            var totalParkTime = result.totalParkTime
+            //Serverless Logic can be replaced by the code below
+
+            // var totalParkTime = 0
+            // for(var i = 0; i < this.parkingRequests.length; i++){
+            //     var entertimeDate = new Date(this.parkingRequests[i].entertime.substring(0,24))
+            //     var leavetimeDate = new Date(this.parkingRequests[i].leavetime.substring(0,24))
+            //     totalParkTime += Date.parse(leavetimeDate) - Date.parse(entertimeDate)
+            // }
+            // totalParkTime /= 1000
+            // totalParkTime /= 60
+            // if (totalParkTime > 100){
+            //     this.totalTimeUnit = "小时"
+            //     totalParkTime /= 60
+            // }
+            // totalParkTime = totalParkTime.toFixed(2)
+
             return totalParkTime
         }
     }

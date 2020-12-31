@@ -10,7 +10,7 @@
     <a-row>
         <a-col :span="2"></a-col>
         <a-col :span="1" align=left>
-            <a-button icon="reload" @click="Flush"></a-button>
+            <a-button icon="reload" @click="GetServerless"></a-button>
         </a-col>
         <a-col :span="3" align=left>
             <a-button type="primary" @click="ShowTable">显示所有请求</a-button>
