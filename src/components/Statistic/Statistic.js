@@ -91,7 +91,7 @@ export default{
             var ow = openwhisk({
                 ignore_certs:true
             })
-            result = await ow.actions.invoke({actionName: "GetTotalTime", result: true, blocking: true, params: {"requests": this.parkingRequests}})
+            let result = await ow.actions.invoke({actionName: "GetTotalTime", result: true, blocking: true, params: {"requests": this.parkingRequests}})
             var totalParkTime = result.totalParkTime
             //Serverless Logic can be replaced by the code below
 
@@ -112,4 +112,5 @@ export default{
             return totalParkTime
         }
     }
+}
 }
